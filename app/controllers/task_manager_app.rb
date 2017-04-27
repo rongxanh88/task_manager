@@ -1,3 +1,5 @@
+require_relative '../models/task'
+
 class TaskManagerApp < Sinatra:: Base
   set :root, File.expand_path("..", __dir__)
 
@@ -6,7 +8,7 @@ class TaskManagerApp < Sinatra:: Base
   end
 
   get '/tasks' do
-    @tasks = ["task1", "task2", "task3"]
+    @tasks = Task.all
     erb :index
   end
 
@@ -18,5 +20,10 @@ class TaskManagerApp < Sinatra:: Base
     task = Task.new(params[:task])
     task.save
     redirect '/tasks'
+  end
+
+  get '/tasks/:id' do
+    @task = Task.find(params[:id])
+    erb :show
   end
 end
